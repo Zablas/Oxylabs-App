@@ -33,7 +33,7 @@ class EditNotificationActivity : AppCompatActivity() {
         txtTimeEdit.setText(notification?.scheduledTime)
     }
 
-    fun onEditClicked(view: View) {
+    fun onSaveClicked(view: View) {
         database.updateNotificationData(
             notification?.id.toString(),
             txtTitleEdit.text.toString(),
@@ -50,5 +50,9 @@ class EditNotificationActivity : AppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    fun onDeletePressed(view: View) {
+
     }
 }

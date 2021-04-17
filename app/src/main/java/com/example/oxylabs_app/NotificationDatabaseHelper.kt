@@ -61,4 +61,9 @@ class NotificationDatabaseHelper(
         contentValues.put(COLUMN_SCHEDULED_TIME, scheduledTime)
         return contentValues
     }
+
+    fun deleteNotification(id: String) {
+        val result = writableDatabase.delete(TABLE_NAME, "$COLUMN_ID=?", arrayOf(id))
+        displayResultToUser(result.toLong())
+    }
 }
