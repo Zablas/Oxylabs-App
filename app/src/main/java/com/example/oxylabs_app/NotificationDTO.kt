@@ -5,4 +5,4 @@ data class NotificationDTO(
     val title: String,
     val description: String,
     val scheduledTime: String
-)
+) : java.io.Serializable
