@@ -58,7 +58,7 @@ class EditNotificationActivity : AppCompatActivity() {
         displayConfirmDialog()
     }
 
-    fun displayConfirmDialog() {
+    private fun displayConfirmDialog() {
         val dialogBuilder = AlertDialog.Builder(this)
         dialogBuilder.setTitle("Cancel ${notification?.title}?")
         dialogBuilder.setMessage("Are you sure you want to cancel ${notification?.title}?")
