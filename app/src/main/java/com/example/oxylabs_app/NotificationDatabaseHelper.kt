@@ -1,11 +1,13 @@
 package com.example.oxylabs_app
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.widget.Toast
 
 class NotificationDatabaseHelper(
-    context: Context?
+    private val context: Context?
 ) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object{
@@ -18,14 +20,28 @@ class NotificationDatabaseHelper(
         const val COLUMN_SCHEDULED_TIME = "notification_scheduled_time"
     }
 
-    override fun onCreate(db: SQLiteDatabase?) {
+    override fun onCreate(database: SQLiteDatabase?) {
         val query = "CREATE TABLE $TABLE_NAME ($COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "$COLUMN_TITLE TEXT, $COLUMN_DESCRIPTION TEXT, $COLUMN_SCHEDULED_TIME TEXT);"
-        db?.execSQL(query)
+        database?.execSQL(query)
     }
 
-    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        db?.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
-        onCreate(db)
+    override fun onUpgrade(database: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
+        database?.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
+        onCreate(database)
+    }
+
+    fun addNewNotification(title: String, description: String, scheduledTime: String){
+        val contentValues = ContentValues()
+        contentValues.put(COLUMN_TITLE, title)
+        contentValues.put(COLUMN_DESCRIPTION, description)
+        contentValues.put(COLUMN_SCHEDULED_TIME, scheduledTime)
+        val result = writableDatabase.insert(TABLE_NAME, null, contentValues)
+        displayResultToUser(result)
+    }
+
+    private fun displayResultToUser(result: Long){
+        if (result == -1L) Toast.makeText(context, "Insertion failed", Toast.LENGTH_SHORT).show()
+        else Toast.makeText(context, "Insertion successful", Toast.LENGTH_SHORT).show()
     }
 }
