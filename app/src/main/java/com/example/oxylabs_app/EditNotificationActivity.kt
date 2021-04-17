@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.activity_edit_notification.*
 
 class EditNotificationActivity : AppCompatActivity() {
     private var notification: NotificationDTO? = null
+    private val database: NotificationDatabaseHelper = NotificationDatabaseHelper(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +34,13 @@ class EditNotificationActivity : AppCompatActivity() {
     }
 
     fun onEditClicked(view: View) {
-
+        database.updateNotificationData(
+            notification?.id.toString(),
+            txtTitleEdit.text.toString(),
+            txtDescriptionEdit.text.toString(),
+            txtTimeEdit.text.toString()
+        )
+        onBackPressed()
     }
 
     fun onCancelClicked(view: View) = onBackPressed()
