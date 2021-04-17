@@ -66,4 +66,8 @@ class NotificationDatabaseHelper(
         val result = writableDatabase.delete(TABLE_NAME, "$COLUMN_ID=?", arrayOf(id))
         displayResultToUser(result.toLong())
     }
+
+    fun deleteAllNotifications() {
+        writableDatabase.execSQL("DELETE FROM $TABLE_NAME")
+    }
 }

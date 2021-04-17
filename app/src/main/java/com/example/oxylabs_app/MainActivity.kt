@@ -4,7 +4,10 @@ import android.content.Intent
 import android.database.Cursor
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -21,6 +24,24 @@ class MainActivity : AppCompatActivity() {
         rvNotifications.adapter = notificationAdapter
         rvNotifications.layoutManager = LinearLayoutManager(this)
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.options_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (isCancelAllClicked(item)) {
+            database.deleteAllNotifications()
+            val notificationCount = notifications.size
+            notifications.clear()
+            notificationAdapter.notifyItemRangeRemoved(0, notificationCount)
+            Toast.makeText(this, "All notifications cancelled", Toast.LENGTH_SHORT).show()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    fun isCancelAllClicked(item: MenuItem): Boolean = item.itemId == R.id.cancel_all
 
     fun openNewNotificationForm(view: View){
         val intent = Intent(this, NewNotificationFormActivity::class.java)
