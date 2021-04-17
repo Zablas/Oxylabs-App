@@ -2,6 +2,7 @@ package com.example.oxylabs_app
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.widget.Toast
@@ -43,5 +44,10 @@ class NotificationDatabaseHelper(
     private fun displayResultToUser(result: Long){
         if (result == -1L) Toast.makeText(context, "Insertion failed", Toast.LENGTH_SHORT).show()
         else Toast.makeText(context, "Insertion successful", Toast.LENGTH_SHORT).show()
+    }
+
+    fun getAllNotifications(): Cursor{
+        val query = "SELECT * FROM $TABLE_NAME"
+        return readableDatabase.rawQuery(query, null)
     }
 }
