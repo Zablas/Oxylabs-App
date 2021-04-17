@@ -32,22 +32,33 @@ class NotificationDatabaseHelper(
         onCreate(database)
     }
 
-    fun addNewNotification(title: String, description: String, scheduledTime: String){
-        val contentValues = ContentValues()
-        contentValues.put(COLUMN_TITLE, title)
-        contentValues.put(COLUMN_DESCRIPTION, description)
-        contentValues.put(COLUMN_SCHEDULED_TIME, scheduledTime)
+    fun addNewNotification(title: String, description: String, scheduledTime: String) {
+        val contentValues = constructContentValues(title, description, scheduledTime)
         val result = writableDatabase.insert(TABLE_NAME, null, contentValues)
         displayResultToUser(result)
     }
 
-    private fun displayResultToUser(result: Long){
-        if (result == -1L) Toast.makeText(context, "Insertion failed", Toast.LENGTH_SHORT).show()
-        else Toast.makeText(context, "Insertion successful", Toast.LENGTH_SHORT).show()
+    private fun displayResultToUser(result: Long) {
+        if (result == -1L) Toast.makeText(context, "Operation failed", Toast.LENGTH_SHORT).show()
+        else Toast.makeText(context, "Operation successful", Toast.LENGTH_SHORT).show()
     }
 
-    fun getAllNotifications(): Cursor{
+    fun getAllNotifications(): Cursor {
         val query = "SELECT * FROM $TABLE_NAME"
         return readableDatabase.rawQuery(query, null)
+    }
+
+    fun updateNotificationData(id: String, title: String, description: String, scheduledTime: String) {
+        val contentValues = constructContentValues(title, description, scheduledTime)
+        val result = writableDatabase.update(TABLE_NAME, contentValues, "$COLUMN_ID=?", arrayOf(id))
+        displayResultToUser(result.toLong())
+    }
+
+    private fun constructContentValues(title: String, description: String, scheduledTime: String): ContentValues {
+        val contentValues = ContentValues()
+        contentValues.put(COLUMN_TITLE, title)
+        contentValues.put(COLUMN_DESCRIPTION, description)
+        contentValues.put(COLUMN_SCHEDULED_TIME, scheduledTime)
+        return contentValues
     }
 }
