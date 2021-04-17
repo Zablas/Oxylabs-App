@@ -1,10 +1,12 @@
 package com.example.oxylabs_app
 
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import kotlinx.android.synthetic.main.activity_edit_notification.*
 
 class EditNotificationActivity : AppCompatActivity() {
@@ -43,7 +45,7 @@ class EditNotificationActivity : AppCompatActivity() {
         onBackPressed()
     }
 
-    fun onCancelClicked(view: View) = onBackPressed()
+    fun onBackClicked(view: View) = onBackPressed()
 
     override fun onBackPressed() {
         super.onBackPressed()
@@ -53,6 +55,20 @@ class EditNotificationActivity : AppCompatActivity() {
     }
 
     fun onDeletePressed(view: View) {
+        displayConfirmDialog()
+    }
 
+    fun displayConfirmDialog() {
+        val dialogBuilder = AlertDialog.Builder(this)
+        dialogBuilder.setTitle("Cancel ${notification?.title}?")
+        dialogBuilder.setMessage("Are you sure you want to cancel ${notification?.title}?")
+        dialogBuilder.setPositiveButton("Yes") { _: DialogInterface, _: Int ->
+            database.deleteNotification(notification?.id.toString())
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        dialogBuilder.setNegativeButton("No") { _: DialogInterface, _: Int -> }
+        dialogBuilder.create().show()
     }
 }
