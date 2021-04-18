@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Oxylabs Programėlė</string>
+    <string name="new_notification_button">Pridėti naują pranešimą</string>
+    <string name="add_button">Pridėti</string>
+    <string name="cancel_button">Atšaukti</string>
+    <string name="time_hint">Laikas</string>
+    <string name="title_hint">Pavadinimas</string>
+    <string name="description_hint">Aprašymas</string>
+    <string name="delete_button">Ištrinti</string>
+    <string name="save_button">Išsaugoti</string>
+    <string name="back_button">Grįžti</string>
+</resources>

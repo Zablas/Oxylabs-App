@@ -20,14 +20,15 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:ems="10"
-            android:hint="Time"
+            android:hint="@string/time_hint"
             android:inputType="time"
             android:focusableInTouchMode="false"
             android:onClick="pickDateTime"
             app:layout_constraintBottom_toTopOf="@+id/txtDescriptionEdit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtTitleEdit" />
+            app:layout_constraintTop_toBottomOf="@+id/txtTitleEdit"
+            android:autofillHints="@string/time_hint" />
 
         <EditText
             android:id="@+id/txtDescriptionEdit"
@@ -39,12 +40,13 @@
             android:layout_marginRight="8dp"
             android:ems="10"
             android:gravity="start|top"
-            android:hint="Description"
+            android:hint="@string/description_hint"
             android:inputType="textMultiLine"
             app:layout_constraintBottom_toTopOf="@+id/guideline2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtTimeEdit" />
+            app:layout_constraintTop_toBottomOf="@+id/txtTimeEdit"
+            android:autofillHints="@string/description_hint" />
 
         <EditText
             android:id="@+id/txtTitleEdit"
@@ -55,7 +57,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:ems="10"
-            android:hint="Title"
+            android:hint="@string/title_hint"
             android:inputType="textPersonName"
             app:layout_constraintBottom_toTopOf="@+id/txtTimeEdit"
             app:layout_constraintEnd_toEndOf="parent"
@@ -63,7 +65,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.58000004"
-            app:layout_constraintVertical_chainStyle="packed" />
+            app:layout_constraintVertical_chainStyle="packed"
+            android:autofillHints="@string/title_hint" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"
@@ -77,7 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onDeletePressed"
-            android:text="Delete"
+            android:text="@string/delete_button"
             android:textColor="#EA0505"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnEdit"
@@ -91,7 +94,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onSaveClicked"
-            android:text="Save"
+            android:text="@string/save_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnCancelEdit"
             app:layout_constraintHorizontal_bias="0.5"
@@ -104,7 +107,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onBackClicked"
-            android:text="Back"
+            android:text="@string/back_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
