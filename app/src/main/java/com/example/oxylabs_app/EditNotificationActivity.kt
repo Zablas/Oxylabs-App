@@ -1,15 +1,22 @@
 package com.example.oxylabs_app
 
 import android.app.AlarmManager
+import android.app.DatePickerDialog
 import android.app.PendingIntent
+import android.app.TimePickerDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.icu.util.Calendar
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import kotlinx.android.synthetic.main.activity_edit_notification.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class EditNotificationActivity : AppCompatActivity() {
     private var notification: NotificationDTO? = null
@@ -18,6 +25,7 @@ class EditNotificationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_notification)
+        txtTimeEdit.keyListener = null
         getIntentData()
         setEditTextValues()
     }
@@ -84,5 +92,27 @@ class EditNotificationActivity : AppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun pickDateTime(view: View) {
+        val currentDateTime = CurrentDateTime(Calendar.getInstance())
+        DatePickerDialog(this, { _, year, month, day ->
+            showTimePickerDialog(currentDateTime, year, month, day)
+        }, currentDateTime.startYear, currentDateTime.startMonth, currentDateTime.startDay).show()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun showTimePickerDialog(currentDateTime: CurrentDateTime, year: Int, month: Int, day: Int) {
+        TimePickerDialog(this, { _, hour, minute -> setTimeEditText(year, month, day, hour, minute) },
+            currentDateTime.startHour, currentDateTime.startMinute, true).show()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun setTimeEditText(year: Int, month: Int, day: Int, hour: Int, minute: Int) {
+        val pickedDateTime = Calendar.getInstance()
+        pickedDateTime.set(year, month, day, hour, minute)
+        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+        txtTimeEdit.setText(formatter.format(pickedDateTime.time))
     }
 }
