@@ -47,13 +47,39 @@ class EditNotificationActivity : AppCompatActivity() {
     }
 
     fun onSaveClicked(view: View) {
-        val cursor = database.getNotification(notification?.id.toString())
-        if (isNotificationInDatabase(cursor)) {
-            updateNotificationOnTheManager()
-            saveUpdatedNotificationToDatabase()
-            onBackPressed()
+        clearErrors()
+        if (areFieldsValid()) {
+            val cursor = database.getNotification(notification?.id.toString())
+            if (isNotificationInDatabase(cursor)) {
+                updateNotificationOnTheManager()
+                saveUpdatedNotificationToDatabase()
+                onBackPressed()
+            }
+            else Toast.makeText(this, R.string.notification_expired, Toast.LENGTH_SHORT).show()
         }
-        else Toast.makeText(this, R.string.notification_expired, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun areFieldsValid(): Boolean {
+        var result = true
+        if (txtTitleEdit.text.isEmpty()) {
+            txtTitleEdit.error = resources.getString(R.string.title_validation_error)
+            result = false
+        }
+        if (txtTimeEdit.text.isEmpty()) {
+            txtTimeEdit.error = resources.getString(R.string.time_validation_error)
+            result = false
+        }
+        if (txtDescriptionEdit.text.isEmpty()) {
+            txtDescriptionEdit.error = resources.getString(R.string.description_validation_error)
+            result = false
+        }
+        return result
+    }
+
+    private fun clearErrors() {
+        txtTitleEdit.error = null
+        txtTimeEdit.error = null
+        txtDescriptionEdit.error = null
     }
 
     private fun updateNotificationOnTheManager() {
