@@ -25,7 +25,7 @@ class NotificationBroadcaster() : BroadcastReceiver() {
         val title = intent?.getStringExtra("title")
         val description = intent?.getStringExtra("description")
         return context?.let {
-            NotificationCompat.Builder(it, "TestChannel")
+            NotificationCompat.Builder(it, "MainNotificationChannel")
                 .setSmallIcon(R.drawable.ic_notifications)
                 .setContentTitle(title)
                 .setContentText(description)
