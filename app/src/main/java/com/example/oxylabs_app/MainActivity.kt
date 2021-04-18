@@ -1,17 +1,20 @@
 package com.example.oxylabs_app
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.DialogInterface
 import android.content.Intent
 import android.database.Cursor
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -19,9 +22,11 @@ class MainActivity : AppCompatActivity() {
     private val notifications: ArrayList<NotificationDTO> = ArrayList()
     private val notificationAdapter: NotificationAdapter = NotificationAdapter(this, notifications)
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        createNotificationChannel()
         displayNotificationList()
         rvNotifications.adapter = notificationAdapter
         rvNotifications.layoutManager = LinearLayoutManager(this)
@@ -38,6 +43,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun isCancelAllClicked(item: MenuItem): Boolean = item.itemId == R.id.cancel_all
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun createNotificationChannel() {
+        val channel = NotificationChannel("MainNotificationChannel",
+            "MainNotificationChannel",
+            NotificationManager.IMPORTANCE_DEFAULT)
+        channel.description = "MainNotificationChannel"
+        val notificationManager = getSystemService(NotificationManager::class.java)
+        notificationManager.createNotificationChannel(channel)
+    }
 
     private fun displayConfirmDialog() {
         val dialogBuilder = AlertDialog.Builder(this)

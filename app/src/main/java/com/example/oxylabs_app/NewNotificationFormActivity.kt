@@ -1,25 +1,19 @@
 package com.example.oxylabs_app
 
 import android.app.AlarmManager
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.RequiresApi
 import kotlinx.android.synthetic.main.activity_new_notification_form.*
 
 class NewNotificationFormActivity : AppCompatActivity() {
     private val database: NotificationDatabaseHelper = NotificationDatabaseHelper(this)
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_notification_form)
-        createNotificationChannel()
     }
 
     fun onCancelClicked(view: View) = onBackPressed()
@@ -52,24 +46,14 @@ class NewNotificationFormActivity : AppCompatActivity() {
         intent.putExtra("title", txtTitle.text.toString())
         intent.putExtra("description", txtDescription.text.toString())
         intent.putExtra("id", insertResult)
-        return PendingIntent.getBroadcast(this, 0, intent, 0)
+        return PendingIntent.getBroadcast(this, insertResult.toInt(), intent, 0)
     }
 
     private fun setAlarmManager(pendingIntent: PendingIntent) {
         val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
         val clickTime = System.currentTimeMillis()
-        alarmManager.set(AlarmManager.RTC_WAKEUP, clickTime + 5000, pendingIntent)
+        alarmManager.set(AlarmManager.RTC_WAKEUP, clickTime + 7000, pendingIntent)
     }
 
     private fun wasInsertionSuccessful(insertResult: Long): Boolean = insertResult != -1L
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun createNotificationChannel() {
-        val channel = NotificationChannel("TestChannel",
-            "TestChannelName",
-            NotificationManager.IMPORTANCE_DEFAULT)
-        channel.description = "TestDescription"
-        val notificationManager = getSystemService(NotificationManager::class.java)
-        notificationManager.createNotificationChannel(channel)
-    }
 }

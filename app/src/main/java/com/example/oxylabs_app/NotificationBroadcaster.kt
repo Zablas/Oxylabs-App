@@ -10,7 +10,7 @@ class NotificationBroadcaster : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         val title = intent?.getStringExtra("title")
         val description = intent?.getStringExtra("description")
-        val id = intent?.getIntExtra("id", -1)
+        val id = intent?.getLongExtra("id", -1)?.toInt()
         val notificationBuilder = context?.let {
             NotificationCompat.Builder(it, "TestChannel")
                 .setSmallIcon(R.drawable.ic_notifications)
@@ -20,6 +20,8 @@ class NotificationBroadcaster : BroadcastReceiver() {
         }
 
         val notificationManager = context?.let { NotificationManagerCompat.from(it) }
-        if (notificationBuilder != null) id?.let { notificationManager?.notify(it, notificationBuilder.build()) }
+        if (notificationBuilder != null) id?.let {
+            notificationManager?.notify(it, notificationBuilder.build())
+        }
     }
 }

@@ -1,5 +1,7 @@
 package com.example.oxylabs_app
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -63,12 +65,24 @@ class EditNotificationActivity : AppCompatActivity() {
         dialogBuilder.setTitle("Cancel ${notification?.title}?")
         dialogBuilder.setMessage("Are you sure you want to cancel ${notification?.title}?")
         dialogBuilder.setPositiveButton("Yes") { _: DialogInterface, _: Int ->
-            database.deleteNotification(notification?.id.toString())
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
+            notification?.id?.let { cancelNotification(it) }
+            returnToNotificationList()
         }
         dialogBuilder.setNegativeButton("No") { _: DialogInterface, _: Int -> }
         dialogBuilder.create().show()
+    }
+
+    private fun cancelNotification(id: Int) {
+        val intent = Intent(this, NotificationBroadcaster::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(this, id, intent, 0)
+        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+        alarmManager.cancel(pendingIntent)
+        database.deleteNotification(id.toString())
+    }
+
+    private fun returnToNotificationList() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }
