@@ -71,13 +71,13 @@ class EditNotificationActivity : AppCompatActivity() {
     private fun displayConfirmDialog() {
         val dialogBuilder = AlertDialog.Builder(this)
         dialogBuilder.setTitle("Cancel ${notification?.title}?")
-        dialogBuilder.setMessage("Are you sure you want to cancel ${notification?.title}?")
-        dialogBuilder.setPositiveButton("Yes") { _: DialogInterface, _: Int ->
-            notification?.id?.let { cancelNotification(it) }
-            returnToNotificationList()
-        }
-        dialogBuilder.setNegativeButton("No") { _: DialogInterface, _: Int -> }
-        dialogBuilder.create().show()
+            .setMessage("Are you sure you want to cancel ${notification?.title}?")
+            .setPositiveButton("Yes") { _: DialogInterface, _: Int ->
+                notification?.id?.let { cancelNotification(it) }
+                returnToNotificationList()
+            }
+            .setNegativeButton("No") { _: DialogInterface, _: Int -> }
+            .create().show()
     }
 
     private fun cancelNotification(id: Int) {

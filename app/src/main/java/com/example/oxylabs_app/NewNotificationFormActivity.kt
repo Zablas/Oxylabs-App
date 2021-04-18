@@ -14,6 +14,9 @@ import androidx.annotation.RequiresApi
 import kotlinx.android.synthetic.main.activity_new_notification_form.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.time.DurationUnit
+import kotlin.time.ExperimentalTime
+import kotlin.time.milliseconds
 
 class NewNotificationFormActivity : AppCompatActivity() {
     private val database: NotificationDatabaseHelper = NotificationDatabaseHelper(this)
@@ -60,8 +63,9 @@ class NewNotificationFormActivity : AppCompatActivity() {
 
     private fun setAlarmManager(pendingIntent: PendingIntent) {
         val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
-        val clickTime = System.currentTimeMillis()
-        alarmManager.set(AlarmManager.RTC_WAKEUP, clickTime + 7000, pendingIntent)
+        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+        val parsedDateTime = formatter.parse(txtTime.text.toString())
+        parsedDateTime?.time?.let { alarmManager.set(AlarmManager.RTC_WAKEUP, it, pendingIntent) }
     }
 
     private fun wasInsertionSuccessful(insertResult: Long): Boolean = insertResult != -1L

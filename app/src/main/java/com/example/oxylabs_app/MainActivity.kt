@@ -59,10 +59,10 @@ class MainActivity : AppCompatActivity() {
     private fun displayConfirmDialog() {
         val dialogBuilder = AlertDialog.Builder(this)
         dialogBuilder.setTitle("Cancel all notifications?")
-        dialogBuilder.setMessage("Are you sure you want to cancel all notifications?")
-        dialogBuilder.setPositiveButton("Yes") { _: DialogInterface, _: Int -> cancelAllNotifications() }
-        dialogBuilder.setNegativeButton("No") { _: DialogInterface, _: Int -> }
-        dialogBuilder.create().show()
+            .setMessage("Are you sure you want to cancel all notifications?")
+            .setPositiveButton("Yes") { _: DialogInterface, _: Int -> cancelAllNotifications() }
+            .setNegativeButton("No") { _: DialogInterface, _: Int -> }
+            .create().show()
     }
 
     private fun cancelAllNotifications() {
