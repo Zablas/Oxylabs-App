@@ -1,3 +1,24 @@
 <resources>
-    <string name="app_name">Oxylabs-App</string>
+    <string name="app_name">Oxylabs App</string>
+    <string name="new_notification_button">Add new notification</string>
+    <string name="add_button">Add</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="time_hint">Time</string>
+    <string name="title_hint">Title</string>
+    <string name="description_hint">Description</string>
+    <string name="delete_button">Delete</string>
+    <string name="save_button">Save</string>
+    <string name="back_button">Back</string>
+    <string name="cancel_all_notifications_title">Cancel all notifications?</string>
+    <string name="cancel_all_notifications_description">Are you sure you want to cancel all notifications?</string>
+    <string name="yes_button">Yes</string>
+    <string name="no_button">No</string>
+    <string name="cancel_toast">All notifications cancelled</string>
+    <string name="refresh_request_toast">This notification has expired. Please refresh the list</string>
+    <string name="operation_failed">Operation failed</string>
+    <string name="operation_successful">Operation successful</string>
+    <string name="data_transfer_error">Error while transferring data</string>
+    <string name="notification_expired">This notification has expired</string>
+    <string name="cancel_notification_title">Cancel</string>
+    <string name="cancel_notification_description">Are you sure you want to cancel</string>
 </resources>

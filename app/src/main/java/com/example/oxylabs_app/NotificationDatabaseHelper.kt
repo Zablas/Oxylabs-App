@@ -40,8 +40,8 @@ class NotificationDatabaseHelper(
     }
 
     private fun displayResultToUser(result: Long) {
-        if (result == -1L) Toast.makeText(context, "Operation failed", Toast.LENGTH_SHORT).show()
-        else Toast.makeText(context, "Operation successful", Toast.LENGTH_SHORT).show()
+        if (result == -1L) Toast.makeText(context, R.string.operation_failed, Toast.LENGTH_SHORT).show()
+        else Toast.makeText(context, R.string.operation_successful, Toast.LENGTH_SHORT).show()
     }
 
     fun getAllNotifications(): Cursor {

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Oxylabs Programėlė</string>
+    <string name="new_notification_button">Pridėti naują pranešimą</string>
+    <string name="add_button">Pridėti</string>
+    <string name="cancel_button">Atšaukti</string>
+    <string name="time_hint">Laikas</string>
+    <string name="title_hint">Pavadinimas</string>
+    <string name="description_hint">Aprašymas</string>
+    <string name="delete_button">Ištrinti</string>
+    <string name="save_button">Išsaugoti</string>
+    <string name="back_button">Grįžti</string>
+    <string name="cancel_all_notifications_title">Atšaukti visus pranešimus?</string>
+    <string name="cancel_all_notifications_description">Ar tikrai norite atšaukti visus pranešimus?</string>
+    <string name="yes_button">Taip</string>
+    <string name="no_button">Ne</string>
+    <string name="cancel_toast">Visi pranešimai atšaukti</string>
+    <string name="refresh_request_toast">Pranešimas jau baigtas. Prašome atnaujinti sąrašą</string>
+    <string name="operation_failed">Operacija nepavyko</string>
+    <string name="operation_successful">Operacija sėkminga</string>
+    <string name="data_transfer_error">Klaida pernešant duomenis</string>
+    <string name="notification_expired">Pranešimas jau baigtas</string>
+    <string name="cancel_notification_title">Atšaukti</string>
+    <string name="cancel_notification_description">Ar tikrai norite atšaukti</string>
+</resources>
