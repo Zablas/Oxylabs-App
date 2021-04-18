@@ -1,7 +1,9 @@
 package com.example.oxylabs_app
 
+import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.DialogInterface
 import android.content.Intent
 import android.database.Cursor
@@ -64,11 +66,25 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun cancelAllNotifications() {
+        cancelAllNotificationsFromManager()
         database.deleteAllNotifications()
+        refreshAdapter()
+        Toast.makeText(this, "All notifications cancelled", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun cancelAllNotificationsFromManager() {
+        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, NotificationBroadcaster::class.java)
+        for (notification in notifications) {
+            val pendingIntent = PendingIntent.getBroadcast(this, notification.id, intent, 0)
+            alarmManager.cancel(pendingIntent)
+        }
+    }
+
+    private fun refreshAdapter() {
         val notificationCount = notifications.size
         notifications.clear()
         notificationAdapter.notifyItemRangeRemoved(0, notificationCount)
-        Toast.makeText(this, "All notifications cancelled", Toast.LENGTH_SHORT).show()
     }
 
     fun openNewNotificationForm(view: View){
