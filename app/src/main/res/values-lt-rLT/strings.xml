@@ -22,4 +22,7 @@
     <string name="notification_expired">Pranešimas jau baigtas</string>
     <string name="cancel_notification_title">Atšaukti</string>
     <string name="cancel_notification_description">Ar tikrai norite atšaukti</string>
+    <string name="title_validation_error">Privalote įvesti pavadinimą</string>
+    <string name="time_validation_error">Privalote įvesti laiką</string>
+    <string name="description_validation_error">Privalote įvesti aprašymą</string>
 </resources>
