@@ -42,9 +42,7 @@ class NotificationAdapter(
     private fun checkNotificationForValidity(position: Int) {
         val cursor = database.getNotification(notifications[position].id.toString())
         if (isNotificationInDatabase(cursor)) openEditForm(position)
-        else Toast.makeText(context,
-            "This notification has expired. Please refresh the list",
-            Toast.LENGTH_SHORT).show()
+        else Toast.makeText(context, R.string.refresh_request_toast, Toast.LENGTH_SHORT).show()
     }
 
     private fun isNotificationInDatabase(cursor: Cursor): Boolean = cursor.moveToNext()

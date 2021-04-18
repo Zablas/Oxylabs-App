@@ -35,7 +35,7 @@ class EditNotificationActivity : AppCompatActivity() {
         if(intent.hasExtra("notification"))
             notification = intent.getSerializableExtra("notification") as NotificationDTO
         else {
-            Toast.makeText(this, "Error while transferring data", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.data_transfer_error, Toast.LENGTH_SHORT).show()
             onBackPressed()
         }
     }
@@ -53,7 +53,7 @@ class EditNotificationActivity : AppCompatActivity() {
             saveUpdatedNotificationToDatabase()
             onBackPressed()
         }
-        else Toast.makeText(this, "This notification has expired", Toast.LENGTH_SHORT).show()
+        else Toast.makeText(this, R.string.notification_expired, Toast.LENGTH_SHORT).show()
     }
 
     private fun updateNotificationOnTheManager() {
@@ -97,23 +97,23 @@ class EditNotificationActivity : AppCompatActivity() {
     fun onDeletePressed(view: View) {
         val cursor = database.getNotification(notification?.id.toString())
         if (isNotificationInDatabase(cursor)) displayConfirmDialog()
-        else Toast.makeText(this, "This notification has expired", Toast.LENGTH_SHORT).show()
+        else Toast.makeText(this, R.string.notification_expired, Toast.LENGTH_SHORT).show()
     }
 
     private fun isNotificationInDatabase(cursor: Cursor): Boolean = cursor.moveToNext()
 
     private fun displayConfirmDialog() {
         val dialogBuilder = AlertDialog.Builder(this)
-        dialogBuilder.setTitle("Cancel ${notification?.title}?")
-            .setMessage("Are you sure you want to cancel ${notification?.title}?")
-            .setPositiveButton("Yes") { _: DialogInterface, _: Int ->
+        dialogBuilder.setTitle("${R.string.cancel_notification_title} ${notification?.title}?")
+            .setMessage("${R.string.cancel_notification_description} ${notification?.title}?")
+            .setPositiveButton(R.string.yes_button) { _: DialogInterface, _: Int ->
                 notification?.id?.let {
                     cancelNotification(it)
                     database.deleteNotification(it.toString())
                 }
                 returnToNotificationList()
             }
-            .setNegativeButton("No") { _: DialogInterface, _: Int -> }
+            .setNegativeButton(R.string.no_button) { _: DialogInterface, _: Int -> }
             .create().show()
     }
 

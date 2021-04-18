@@ -59,10 +59,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun displayConfirmDialog() {
         val dialogBuilder = AlertDialog.Builder(this)
-        dialogBuilder.setTitle("Cancel all notifications?")
-            .setMessage("Are you sure you want to cancel all notifications?")
-            .setPositiveButton("Yes") { _: DialogInterface, _: Int -> cancelAllNotifications() }
-            .setNegativeButton("No") { _: DialogInterface, _: Int -> }
+        dialogBuilder.setTitle(R.string.cancel_all_notifications_title)
+            .setMessage(R.string.cancel_all_notifications_description)
+            .setPositiveButton(R.string.yes_button) { _: DialogInterface, _: Int -> cancelAllNotifications() }
+            .setNegativeButton(R.string.no_button) { _: DialogInterface, _: Int -> }
             .create().show()
     }
 
@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
         cancelAllNotificationsFromManager()
         database.deleteAllNotifications()
         refreshAdapter()
-        Toast.makeText(this, "All notifications cancelled", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, R.string.cancel_toast, Toast.LENGTH_SHORT).show()
     }
 
     private fun cancelAllNotificationsFromManager() {
