@@ -6,6 +6,7 @@ import android.database.Cursor
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -35,6 +36,8 @@ class NotificationAdapter(
         holder.textViewDescription.text = notifications[position].description
         holder.textViewScheduledTime.text = notifications[position].scheduledTime
         holder.rowLayout.setOnClickListener { checkNotificationForValidity(position) }
+        val animation = AnimationUtils.loadAnimation(context, R.anim.translate_anim)
+        holder.rowLayout.animation = animation
     }
 
     override fun getItemCount(): Int = notifications.size

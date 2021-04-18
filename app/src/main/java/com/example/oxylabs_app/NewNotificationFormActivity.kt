@@ -14,9 +14,6 @@ import androidx.annotation.RequiresApi
 import kotlinx.android.synthetic.main.activity_new_notification_form.*
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.time.DurationUnit
-import kotlin.time.ExperimentalTime
-import kotlin.time.milliseconds
 
 class NewNotificationFormActivity : AppCompatActivity() {
     private val database: NotificationDatabaseHelper = NotificationDatabaseHelper(this)
