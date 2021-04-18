@@ -32,10 +32,11 @@ class NotificationDatabaseHelper(
         onCreate(database)
     }
 
-    fun addNewNotification(title: String, description: String, scheduledTime: String) {
+    fun addNewNotification(title: String, description: String, scheduledTime: String): Long {
         val contentValues = constructContentValues(title, description, scheduledTime)
         val result = writableDatabase.insert(TABLE_NAME, null, contentValues)
         displayResultToUser(result)
+        return result
     }
 
     private fun displayResultToUser(result: Long) {
@@ -46,6 +47,11 @@ class NotificationDatabaseHelper(
     fun getAllNotifications(): Cursor {
         val query = "SELECT * FROM $TABLE_NAME"
         return readableDatabase.rawQuery(query, null)
+    }
+
+    fun getNotification(id: String): Cursor {
+        val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_ID=?"
+        return readableDatabase.rawQuery(query, arrayOf(id))
     }
 
     fun updateNotificationData(id: String, title: String, description: String, scheduledTime: String) {
@@ -62,9 +68,9 @@ class NotificationDatabaseHelper(
         return contentValues
     }
 
-    fun deleteNotification(id: String) {
+    fun deleteNotification(id: String, shouldInformAboutResult: Boolean = true) {
         val result = writableDatabase.delete(TABLE_NAME, "$COLUMN_ID=?", arrayOf(id))
-        displayResultToUser(result.toLong())
+        if (shouldInformAboutResult) displayResultToUser(result.toLong())
     }
 
     fun deleteAllNotifications() {

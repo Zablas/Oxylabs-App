@@ -2,14 +2,19 @@ package com.example.oxylabs_app
 
 import android.content.Context
 import android.content.Intent
+import android.database.Cursor
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
-class NotificationAdapter(private val context: Context, private val notifications: ArrayList<NotificationDTO>)
+class NotificationAdapter(
+    private val context: Context,
+    private val notifications: ArrayList<NotificationDTO>,
+    private val database: NotificationDatabaseHelper)
     : RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder>() {
 
     class NotificationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -29,12 +34,22 @@ class NotificationAdapter(private val context: Context, private val notification
         holder.textViewTitle.text = notifications[position].title
         holder.textViewDescription.text = notifications[position].description
         holder.textViewScheduledTime.text = notifications[position].scheduledTime
-        holder.rowLayout.setOnClickListener { navigateToEditActivity(position) }
+        holder.rowLayout.setOnClickListener { checkNotificationForValidity(position) }
     }
 
     override fun getItemCount(): Int = notifications.size
 
-    fun navigateToEditActivity(position: Int) {
+    private fun checkNotificationForValidity(position: Int) {
+        val cursor = database.getNotification(notifications[position].id.toString())
+        if (isNotificationInDatabase(cursor)) openEditForm(position)
+        else Toast.makeText(context,
+            "This notification has expired. Please refresh the list",
+            Toast.LENGTH_SHORT).show()
+    }
+
+    private fun isNotificationInDatabase(cursor: Cursor): Boolean = cursor.moveToNext()
+
+    private fun openEditForm(position: Int) {
         val intent = Intent(context, EditNotificationActivity::class.java)
         val notification = NotificationDTO(
             notifications[position].id,

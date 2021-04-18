@@ -17,6 +17,8 @@
         android:ems="10"
         android:hint="Time"
         android:inputType="time"
+        android:focusableInTouchMode="false"
+        android:onClick="pickDateTime"
         app:layout_constraintBottom_toTopOf="@+id/txtDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
