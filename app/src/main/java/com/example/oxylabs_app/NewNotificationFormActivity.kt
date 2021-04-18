@@ -13,6 +13,8 @@ import androidx.annotation.RequiresApi
 import kotlinx.android.synthetic.main.activity_new_notification_form.*
 
 class NewNotificationFormActivity : AppCompatActivity() {
+    private val database: NotificationDatabaseHelper = NotificationDatabaseHelper(this)
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,21 +32,36 @@ class NewNotificationFormActivity : AppCompatActivity() {
     }
 
     fun onAddClicked(view: View){
-        val database = NotificationDatabaseHelper(this)
-        val insertResult = database.addNewNotification(
+        val insertResult = saveNotificationToDatabase()
+        if (wasInsertionSuccessful(insertResult)) {
+            val pendingIntent = createPendingIntent(insertResult)
+            setAlarmManager(pendingIntent)
+        }
+    }
+
+    private fun saveNotificationToDatabase(): Long {
+        return database.addNewNotification(
             txtTitle.text.toString(),
             txtDescription.text.toString(),
             txtTime.text.toString()
         )
+    }
+
+    private fun createPendingIntent(insertResult: Long): PendingIntent {
         val intent = Intent(this, NotificationBroadcaster::class.java)
         intent.putExtra("title", txtTitle.text.toString())
         intent.putExtra("description", txtDescription.text.toString())
         intent.putExtra("id", insertResult)
-        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
+        return PendingIntent.getBroadcast(this, 0, intent, 0)
+    }
+
+    private fun setAlarmManager(pendingIntent: PendingIntent) {
         val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
         val clickTime = System.currentTimeMillis()
         alarmManager.set(AlarmManager.RTC_WAKEUP, clickTime + 5000, pendingIntent)
     }
+
+    private fun wasInsertionSuccessful(insertResult: Long): Boolean = insertResult != -1L
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun createNotificationChannel() {
