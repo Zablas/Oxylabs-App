@@ -35,11 +35,37 @@ class NewNotificationFormActivity : AppCompatActivity() {
     }
 
     fun onAddClicked(view: View){
-        val insertResult = saveNotificationToDatabase()
-        if (wasInsertionSuccessful(insertResult)) {
-            val pendingIntent = createPendingIntent(insertResult)
-            setAlarmManager(pendingIntent)
+        clearErrors()
+        if (areFieldsValid()){
+            val insertResult = saveNotificationToDatabase()
+            if (wasInsertionSuccessful(insertResult)) {
+                val pendingIntent = createPendingIntent(insertResult)
+                setAlarmManager(pendingIntent)
+            }
         }
+    }
+
+    private fun areFieldsValid(): Boolean {
+        var result = true
+        if (txtTitle.text.isEmpty()) {
+            txtTitle.error = resources.getString(R.string.title_validation_error)
+            result = false
+        }
+        if (txtTime.text.isEmpty()) {
+            txtTime.error = resources.getString(R.string.time_validation_error)
+            result = false
+        }
+        if (txtDescription.text.isEmpty()) {
+            txtDescription.error = resources.getString(R.string.description_validation_error)
+            result = false
+        }
+        return result
+    }
+
+    private fun clearErrors() {
+        txtTitle.error = null
+        txtTime.error = null
+        txtDescription.error = null
     }
 
     private fun saveNotificationToDatabase(): Long {

@@ -21,4 +21,7 @@
     <string name="notification_expired">This notification has expired</string>
     <string name="cancel_notification_title">Cancel</string>
     <string name="cancel_notification_description">Are you sure you want to cancel</string>
+    <string name="title_validation_error">You must enter a title</string>
+    <string name="time_validation_error">You must enter a time</string>
+    <string name="description_validation_error">You must enter a description</string>
 </resources>
