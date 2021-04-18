@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.database.Cursor
 import android.icu.util.Calendar
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -46,9 +47,13 @@ class EditNotificationActivity : AppCompatActivity() {
     }
 
     fun onSaveClicked(view: View) {
-        updateNotificationOnTheManager()
-        saveUpdatedNotificationToDatabase()
-        onBackPressed()
+        val cursor = database.getNotification(notification?.id.toString())
+        if (isNotificationInDatabase(cursor)) {
+            updateNotificationOnTheManager()
+            saveUpdatedNotificationToDatabase()
+            onBackPressed()
+        }
+        else Toast.makeText(this, "This notification has expired", Toast.LENGTH_SHORT).show()
     }
 
     private fun updateNotificationOnTheManager() {
@@ -90,8 +95,12 @@ class EditNotificationActivity : AppCompatActivity() {
     }
 
     fun onDeletePressed(view: View) {
-        displayConfirmDialog()
+        val cursor = database.getNotification(notification?.id.toString())
+        if (isNotificationInDatabase(cursor)) displayConfirmDialog()
+        else Toast.makeText(this, "This notification has expired", Toast.LENGTH_SHORT).show()
     }
+
+    private fun isNotificationInDatabase(cursor: Cursor): Boolean = cursor.moveToNext()
 
     private fun displayConfirmDialog() {
         val dialogBuilder = AlertDialog.Builder(this)
