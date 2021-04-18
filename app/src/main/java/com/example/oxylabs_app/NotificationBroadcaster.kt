@@ -8,15 +8,18 @@ import androidx.core.app.NotificationManagerCompat
 
 class NotificationBroadcaster : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
+        val title = intent?.getStringExtra("title")
+        val description = intent?.getStringExtra("description")
+        val id = intent?.getIntExtra("id", -1)
         val notificationBuilder = context?.let {
             NotificationCompat.Builder(it, "TestChannel")
                 .setSmallIcon(R.drawable.ic_notifications)
-                .setContentTitle("Test title")
-                .setContentText("This is a text notification")
+                .setContentTitle(title)
+                .setContentText(description)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
         }
 
         val notificationManager = context?.let { NotificationManagerCompat.from(it) }
-        if (notificationBuilder != null) notificationManager?.notify(200, notificationBuilder.build())
+        if (notificationBuilder != null) id?.let { notificationManager?.notify(it, notificationBuilder.build()) }
     }
 }

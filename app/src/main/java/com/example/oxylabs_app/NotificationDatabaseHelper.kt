@@ -32,10 +32,11 @@ class NotificationDatabaseHelper(
         onCreate(database)
     }
 
-    fun addNewNotification(title: String, description: String, scheduledTime: String) {
+    fun addNewNotification(title: String, description: String, scheduledTime: String): Long {
         val contentValues = constructContentValues(title, description, scheduledTime)
         val result = writableDatabase.insert(TABLE_NAME, null, contentValues)
         displayResultToUser(result)
+        return result
     }
 
     private fun displayResultToUser(result: Long) {
