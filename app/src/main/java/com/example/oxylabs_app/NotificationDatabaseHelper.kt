@@ -49,6 +49,11 @@ class NotificationDatabaseHelper(
         return readableDatabase.rawQuery(query, null)
     }
 
+    fun getNotification(id: String): Cursor {
+        val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_ID=?"
+        return readableDatabase.rawQuery(query, arrayOf(id))
+    }
+
     fun updateNotificationData(id: String, title: String, description: String, scheduledTime: String) {
         val contentValues = constructContentValues(title, description, scheduledTime)
         val result = writableDatabase.update(TABLE_NAME, contentValues, "$COLUMN_ID=?", arrayOf(id))
@@ -63,9 +68,9 @@ class NotificationDatabaseHelper(
         return contentValues
     }
 
-    fun deleteNotification(id: String) {
+    fun deleteNotification(id: String, shouldInformAboutResult: Boolean = true) {
         val result = writableDatabase.delete(TABLE_NAME, "$COLUMN_ID=?", arrayOf(id))
-        displayResultToUser(result.toLong())
+        if (shouldInformAboutResult) displayResultToUser(result.toLong())
     }
 
     fun deleteAllNotifications() {

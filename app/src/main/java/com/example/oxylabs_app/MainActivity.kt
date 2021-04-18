@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
     private val database: NotificationDatabaseHelper = NotificationDatabaseHelper(this)
     private val notifications: ArrayList<NotificationDTO> = ArrayList()
-    private val notificationAdapter: NotificationAdapter = NotificationAdapter(this, notifications)
+    private val notificationAdapter: NotificationAdapter = NotificationAdapter(this, notifications, database)
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         displayNotificationList()
         rvNotifications.adapter = notificationAdapter
         rvNotifications.layoutManager = LinearLayoutManager(this)
+        swipeContainer.setOnRefreshListener { displayNotificationList() }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -94,9 +95,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun displayNotificationList(){
+        notifications.clear()
         val cursor = database.getAllNotifications()
         while (cursor.moveToNext())
             addNotificationToArray(cursor)
+        notificationAdapter.notifyDataSetChanged()
+        swipeContainer.isRefreshing = false
     }
 
     private fun addNotificationToArray(cursor: Cursor){
