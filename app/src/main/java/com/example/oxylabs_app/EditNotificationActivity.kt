@@ -46,13 +46,38 @@ class EditNotificationActivity : AppCompatActivity() {
     }
 
     fun onSaveClicked(view: View) {
+        updateNotificationOnTheManager()
+        saveUpdatedNotificationToDatabase()
+        onBackPressed()
+    }
+
+    private fun updateNotificationOnTheManager() {
+        notification?.id?.let { cancelNotification(it) }
+        setNewNotification()
+    }
+
+    private fun setNewNotification() {
+        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+        val parsedDateTime = formatter.parse(txtTimeEdit.text.toString())
+        val intent = Intent(this, NotificationBroadcaster::class.java)
+        intent.putExtra("title", notification?.title)
+        intent.putExtra("description", notification?.description)
+        intent.putExtra("id", notification?.id)
+        val pendingIntent = notification?.id?.let {
+            PendingIntent.getBroadcast(this,
+                it, intent, 0)
+        }
+        parsedDateTime?.time?.let { alarmManager.set(AlarmManager.RTC_WAKEUP, it, pendingIntent) }
+    }
+
+    private fun saveUpdatedNotificationToDatabase() {
         database.updateNotificationData(
             notification?.id.toString(),
             txtTitleEdit.text.toString(),
             txtDescriptionEdit.text.toString(),
             txtTimeEdit.text.toString()
         )
-        onBackPressed()
     }
 
     fun onBackClicked(view: View) = onBackPressed()
@@ -73,7 +98,10 @@ class EditNotificationActivity : AppCompatActivity() {
         dialogBuilder.setTitle("Cancel ${notification?.title}?")
             .setMessage("Are you sure you want to cancel ${notification?.title}?")
             .setPositiveButton("Yes") { _: DialogInterface, _: Int ->
-                notification?.id?.let { cancelNotification(it) }
+                notification?.id?.let {
+                    cancelNotification(it)
+                    database.deleteNotification(it.toString())
+                }
                 returnToNotificationList()
             }
             .setNegativeButton("No") { _: DialogInterface, _: Int -> }
@@ -85,7 +113,6 @@ class EditNotificationActivity : AppCompatActivity() {
         val pendingIntent = PendingIntent.getBroadcast(this, id, intent, 0)
         val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
         alarmManager.cancel(pendingIntent)
-        database.deleteNotification(id.toString())
     }
 
     private fun returnToNotificationList() {
