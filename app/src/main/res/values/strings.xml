@@ -2,7 +2,7 @@
     <string name="app_name">Oxylabs App</string>
     <string name="new_notification_button">Add new notification</string>
     <string name="add_button">Add</string>
-    <string name="cancel_button">Cancel</string>
+    <string name="cancel_button">Back</string>
     <string name="time_hint">Time</string>
     <string name="title_hint">Title</string>
     <string name="description_hint">Description</string>

@@ -3,7 +3,7 @@
     <string name="app_name">Oxylabs Programėlė</string>
     <string name="new_notification_button">Pridėti naują pranešimą</string>
     <string name="add_button">Pridėti</string>
-    <string name="cancel_button">Atšaukti</string>
+    <string name="cancel_button">Grįžti</string>
     <string name="time_hint">Laikas</string>
     <string name="title_hint">Pavadinimas</string>
     <string name="description_hint">Aprašymas</string>
