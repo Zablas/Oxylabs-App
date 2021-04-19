@@ -1,6 +1,7 @@
 package com.example.oxylabs_app
 
 import android.app.Notification
+import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -24,12 +25,15 @@ class NotificationBroadcaster() : BroadcastReceiver() {
     private fun constructNotification(context: Context?, intent: Intent?): Notification? {
         val title = intent?.getStringExtra("title")
         val description = intent?.getStringExtra("description")
+        val contentIntent = Intent(context, MainActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(context, 0, contentIntent, 0)
         return context?.let {
             NotificationCompat.Builder(it, "MainNotificationChannel")
                 .setSmallIcon(R.drawable.ic_notifications)
                 .setContentTitle(title)
                 .setContentText(description)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
                 .build()
         }
     }

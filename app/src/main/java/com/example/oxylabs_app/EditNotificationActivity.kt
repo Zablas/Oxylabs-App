@@ -46,6 +46,7 @@ class EditNotificationActivity : AppCompatActivity() {
         txtTimeEdit.setText(notification?.scheduledTime)
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     fun onSaveClicked(view: View) {
         clearErrors()
         if (areFieldsValid()) {
@@ -59,9 +60,10 @@ class EditNotificationActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun areFieldsValid(): Boolean {
         var result = true
-        if (txtTitleEdit.text.isEmpty()) {
+        if (txtTitleEdit.text.trim().isEmpty()) {
             txtTitleEdit.error = resources.getString(R.string.title_validation_error)
             result = false
         }
@@ -69,11 +71,23 @@ class EditNotificationActivity : AppCompatActivity() {
             txtTimeEdit.error = resources.getString(R.string.time_validation_error)
             result = false
         }
-        if (txtDescriptionEdit.text.isEmpty()) {
+        else if (isChosenTimeInThePast()) {
+            txtTimeEdit.error = resources.getString(R.string.time_in_past_validation_error)
+            result = false
+        }
+        if (txtDescriptionEdit.text.trim().isEmpty()) {
             txtDescriptionEdit.error = resources.getString(R.string.description_validation_error)
             result = false
         }
         return result
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun isChosenTimeInThePast(): Boolean {
+        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+        val parsedDateTime = formatter.parse(txtTimeEdit.text.toString())
+        val currentTime = System.currentTimeMillis()
+        return parsedDateTime?.time!! < currentTime
     }
 
     private fun clearErrors() {
@@ -105,8 +119,8 @@ class EditNotificationActivity : AppCompatActivity() {
     private fun saveUpdatedNotificationToDatabase() {
         database.updateNotificationData(
             notification?.id.toString(),
-            txtTitleEdit.text.toString(),
-            txtDescriptionEdit.text.toString(),
+            txtTitleEdit.text.trim().toString(),
+            txtDescriptionEdit.text.trim().toString(),
             txtTimeEdit.text.toString()
         )
     }
@@ -132,14 +146,14 @@ class EditNotificationActivity : AppCompatActivity() {
         val dialogBuilder = AlertDialog.Builder(this)
         dialogBuilder.setTitle("${R.string.cancel_notification_title} ${notification?.title}?")
             .setMessage("${R.string.cancel_notification_description} ${notification?.title}?")
-            .setPositiveButton(R.string.yes_button) { _: DialogInterface, _: Int ->
+            .setPositiveButton(R.string.no_button) { _: DialogInterface, _: Int -> }
+            .setNegativeButton(R.string.yes_button) { _: DialogInterface, _: Int ->
                 notification?.id?.let {
                     cancelNotification(it)
                     database.deleteNotification(it.toString())
                 }
                 returnToNotificationList()
             }
-            .setNegativeButton(R.string.no_button) { _: DialogInterface, _: Int -> }
             .create().show()
     }
 

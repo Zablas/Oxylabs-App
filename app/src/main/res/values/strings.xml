@@ -2,7 +2,7 @@
     <string name="app_name">Oxylabs App</string>
     <string name="new_notification_button">Add new notification</string>
     <string name="add_button">Add</string>
-    <string name="cancel_button">Cancel</string>
+    <string name="cancel_button">Back</string>
     <string name="time_hint">Time</string>
     <string name="title_hint">Title</string>
     <string name="description_hint">Description</string>
@@ -24,4 +24,5 @@
     <string name="title_validation_error">You must enter a title</string>
     <string name="time_validation_error">You must enter a time</string>
     <string name="description_validation_error">You must enter a description</string>
+    <string name="time_in_past_validation_error">Entered time must be in the future</string>
 </resources>

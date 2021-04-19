@@ -61,8 +61,8 @@ class MainActivity : AppCompatActivity() {
         val dialogBuilder = AlertDialog.Builder(this)
         dialogBuilder.setTitle(R.string.cancel_all_notifications_title)
             .setMessage(R.string.cancel_all_notifications_description)
-            .setPositiveButton(R.string.yes_button) { _: DialogInterface, _: Int -> cancelAllNotifications() }
-            .setNegativeButton(R.string.no_button) { _: DialogInterface, _: Int -> }
+            .setPositiveButton(R.string.no_button) { _: DialogInterface, _: Int -> }
+            .setNegativeButton(R.string.yes_button) { _: DialogInterface, _: Int -> cancelAllNotifications() }
             .create().show()
     }
 
