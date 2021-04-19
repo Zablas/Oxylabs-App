@@ -146,14 +146,14 @@ class EditNotificationActivity : AppCompatActivity() {
         val dialogBuilder = AlertDialog.Builder(this)
         dialogBuilder.setTitle("${R.string.cancel_notification_title} ${notification?.title}?")
             .setMessage("${R.string.cancel_notification_description} ${notification?.title}?")
-            .setPositiveButton(R.string.yes_button) { _: DialogInterface, _: Int ->
+            .setPositiveButton(R.string.no_button) { _: DialogInterface, _: Int -> }
+            .setNegativeButton(R.string.yes_button) { _: DialogInterface, _: Int ->
                 notification?.id?.let {
                     cancelNotification(it)
                     database.deleteNotification(it.toString())
                 }
                 returnToNotificationList()
             }
-            .setNegativeButton(R.string.no_button) { _: DialogInterface, _: Int -> }
             .create().show()
     }
 
