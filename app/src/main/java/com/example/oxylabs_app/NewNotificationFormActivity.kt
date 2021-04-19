@@ -47,7 +47,7 @@ class NewNotificationFormActivity : AppCompatActivity() {
 
     private fun areFieldsValid(): Boolean {
         var result = true
-        if (txtTitle.text.isEmpty()) {
+        if (txtTitle.text.trim().isEmpty()) {
             txtTitle.error = resources.getString(R.string.title_validation_error)
             result = false
         }
@@ -55,7 +55,7 @@ class NewNotificationFormActivity : AppCompatActivity() {
             txtTime.error = resources.getString(R.string.time_validation_error)
             result = false
         }
-        if (txtDescription.text.isEmpty()) {
+        if (txtDescription.text.trim().isEmpty()) {
             txtDescription.error = resources.getString(R.string.description_validation_error)
             result = false
         }
@@ -70,16 +70,16 @@ class NewNotificationFormActivity : AppCompatActivity() {
 
     private fun saveNotificationToDatabase(): Long {
         return database.addNewNotification(
-            txtTitle.text.toString(),
-            txtDescription.text.toString(),
+            txtTitle.text.trim().toString(),
+            txtDescription.text.trim().toString(),
             txtTime.text.toString()
         )
     }
 
     private fun createPendingIntent(insertResult: Long): PendingIntent {
         val intent = Intent(this, NotificationBroadcaster::class.java)
-        intent.putExtra("title", txtTitle.text.toString())
-        intent.putExtra("description", txtDescription.text.toString())
+        intent.putExtra("title", txtTitle.text.trim().toString())
+        intent.putExtra("description", txtDescription.text.trim().toString())
         intent.putExtra("id", insertResult)
         return PendingIntent.getBroadcast(this, insertResult.toInt(), intent, 0)
     }

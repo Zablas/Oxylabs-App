@@ -61,7 +61,7 @@ class EditNotificationActivity : AppCompatActivity() {
 
     private fun areFieldsValid(): Boolean {
         var result = true
-        if (txtTitleEdit.text.isEmpty()) {
+        if (txtTitleEdit.text.trim().isEmpty()) {
             txtTitleEdit.error = resources.getString(R.string.title_validation_error)
             result = false
         }
@@ -69,7 +69,7 @@ class EditNotificationActivity : AppCompatActivity() {
             txtTimeEdit.error = resources.getString(R.string.time_validation_error)
             result = false
         }
-        if (txtDescriptionEdit.text.isEmpty()) {
+        if (txtDescriptionEdit.text.trim().isEmpty()) {
             txtDescriptionEdit.error = resources.getString(R.string.description_validation_error)
             result = false
         }
@@ -105,8 +105,8 @@ class EditNotificationActivity : AppCompatActivity() {
     private fun saveUpdatedNotificationToDatabase() {
         database.updateNotificationData(
             notification?.id.toString(),
-            txtTitleEdit.text.toString(),
-            txtDescriptionEdit.text.toString(),
+            txtTitleEdit.text.trim().toString(),
+            txtDescriptionEdit.text.trim().toString(),
             txtTimeEdit.text.toString()
         )
     }
