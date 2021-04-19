@@ -25,4 +25,5 @@
     <string name="title_validation_error">Privalote įvesti pavadinimą</string>
     <string name="time_validation_error">Privalote įvesti laiką</string>
     <string name="description_validation_error">Privalote įvesti aprašymą</string>
+    <string name="time_in_past_validation_error">Įvestas laikas turi būti ateityje</string>
 </resources>

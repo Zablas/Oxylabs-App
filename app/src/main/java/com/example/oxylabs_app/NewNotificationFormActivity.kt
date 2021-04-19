@@ -34,6 +34,7 @@ class NewNotificationFormActivity : AppCompatActivity() {
         finish()
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     fun onAddClicked(view: View){
         clearErrors()
         if (areFieldsValid()){
@@ -45,6 +46,7 @@ class NewNotificationFormActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun areFieldsValid(): Boolean {
         var result = true
         if (txtTitle.text.trim().isEmpty()) {
@@ -53,6 +55,10 @@ class NewNotificationFormActivity : AppCompatActivity() {
         }
         if (txtTime.text.isEmpty()) {
             txtTime.error = resources.getString(R.string.time_validation_error)
+            result = false
+        }
+        else if (isChosenTimeInThePast()) {
+            txtTime.error = resources.getString(R.string.time_in_past_validation_error)
             result = false
         }
         if (txtDescription.text.trim().isEmpty()) {
@@ -66,6 +72,14 @@ class NewNotificationFormActivity : AppCompatActivity() {
         txtTitle.error = null
         txtTime.error = null
         txtDescription.error = null
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun isChosenTimeInThePast(): Boolean {
+        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+        val parsedDateTime = formatter.parse(txtTime.text.toString())
+        val currentTime = System.currentTimeMillis()
+        return parsedDateTime?.time!! < currentTime
     }
 
     private fun saveNotificationToDatabase(): Long {

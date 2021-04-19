@@ -46,6 +46,7 @@ class EditNotificationActivity : AppCompatActivity() {
         txtTimeEdit.setText(notification?.scheduledTime)
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     fun onSaveClicked(view: View) {
         clearErrors()
         if (areFieldsValid()) {
@@ -59,6 +60,7 @@ class EditNotificationActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun areFieldsValid(): Boolean {
         var result = true
         if (txtTitleEdit.text.trim().isEmpty()) {
@@ -69,11 +71,23 @@ class EditNotificationActivity : AppCompatActivity() {
             txtTimeEdit.error = resources.getString(R.string.time_validation_error)
             result = false
         }
+        else if (isChosenTimeInThePast()) {
+            txtTimeEdit.error = resources.getString(R.string.time_in_past_validation_error)
+            result = false
+        }
         if (txtDescriptionEdit.text.trim().isEmpty()) {
             txtDescriptionEdit.error = resources.getString(R.string.description_validation_error)
             result = false
         }
         return result
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun isChosenTimeInThePast(): Boolean {
+        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+        val parsedDateTime = formatter.parse(txtTimeEdit.text.toString())
+        val currentTime = System.currentTimeMillis()
+        return parsedDateTime?.time!! < currentTime
     }
 
     private fun clearErrors() {
