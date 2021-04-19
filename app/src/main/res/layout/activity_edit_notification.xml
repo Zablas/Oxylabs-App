@@ -76,12 +76,12 @@
             app:layout_constraintGuide_percent="0.6" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btnDelete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onDeletePressed"
             android:text="@string/delete_button"
-            android:textColor="#EA0505"
+            app:backgroundTint="@android:color/holo_red_dark"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnEdit"
             app:layout_constraintHorizontal_bias="0.5"
@@ -98,7 +98,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnCancelEdit"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/button"
+            app:layout_constraintStart_toEndOf="@+id/btnDelete"
             app:layout_constraintTop_toTopOf="@+id/guideline2"
             app:layout_constraintVertical_bias="0.75" />
 
@@ -108,6 +108,8 @@
             android:layout_height="wrap_content"
             android:onClick="onBackClicked"
             android:text="@string/back_button"
+            android:textColor="@color/design_default_color_primary"
+            app:backgroundTint="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
