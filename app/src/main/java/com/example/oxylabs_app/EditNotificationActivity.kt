@@ -32,8 +32,8 @@ class EditNotificationActivity : AppCompatActivity() {
     }
 
     private fun getIntentData() {
-        if(intent.hasExtra("notification"))
-            notification = intent.getSerializableExtra("notification") as NotificationDTO
+        if(intent.hasExtra(NotificationDTO.ACTIVITY_EXTRA_NAME))
+            notification = intent.getSerializableExtra(NotificationDTO.ACTIVITY_EXTRA_NAME) as NotificationDTO
         else {
             Toast.makeText(this, R.string.data_transfer_error, Toast.LENGTH_SHORT).show()
             onBackPressed()
