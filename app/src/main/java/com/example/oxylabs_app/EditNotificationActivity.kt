@@ -49,7 +49,7 @@ class EditNotificationActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.N)
     fun onSaveClicked(view: View) {
         clearErrors()
-        if (areFieldsValid()) {
+        if (ViewUtils.areFieldsValid(txtTitleEdit, txtTimeEdit, txtDescriptionEdit, resources)) {
             val cursor = database.getNotification(notification?.id.toString())
             if (isNotificationInDatabase(cursor)) {
                 updateNotificationOnTheManager()
@@ -58,36 +58,6 @@ class EditNotificationActivity : AppCompatActivity() {
             }
             else Toast.makeText(this, R.string.notification_expired, Toast.LENGTH_SHORT).show()
         }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.N)
-    private fun areFieldsValid(): Boolean {
-        var result = true
-        if (txtTitleEdit.text.trim().isEmpty()) {
-            txtTitleEdit.error = resources.getString(R.string.title_validation_error)
-            result = false
-        }
-        if (txtTimeEdit.text.isEmpty()) {
-            txtTimeEdit.error = resources.getString(R.string.time_validation_error)
-            result = false
-        }
-        else if (isChosenTimeInThePast()) {
-            txtTimeEdit.error = resources.getString(R.string.time_in_past_validation_error)
-            result = false
-        }
-        if (txtDescriptionEdit.text.trim().isEmpty()) {
-            txtDescriptionEdit.error = resources.getString(R.string.description_validation_error)
-            result = false
-        }
-        return result
-    }
-
-    @RequiresApi(Build.VERSION_CODES.N)
-    private fun isChosenTimeInThePast(): Boolean {
-        val formatter = SimpleDateFormat(DateTime.DATE_TIME_FORMAT, Locale.US)
-        val parsedDateTime = formatter.parse(txtTimeEdit.text.toString())
-        val currentTime = System.currentTimeMillis()
-        return parsedDateTime?.time!! < currentTime
     }
 
     private fun clearErrors() {
