@@ -32,8 +32,8 @@ class EditNotificationActivity : AppCompatActivity() {
     }
 
     private fun getIntentData() {
-        if(intent.hasExtra("notification"))
-            notification = intent.getSerializableExtra("notification") as NotificationDTO
+        if(intent.hasExtra(NotificationDTO.ACTIVITY_EXTRA_NAME))
+            notification = intent.getSerializableExtra(NotificationDTO.ACTIVITY_EXTRA_NAME) as NotificationDTO
         else {
             Toast.makeText(this, R.string.data_transfer_error, Toast.LENGTH_SHORT).show()
             onBackPressed()
@@ -49,7 +49,7 @@ class EditNotificationActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.N)
     fun onSaveClicked(view: View) {
         clearErrors()
-        if (areFieldsValid()) {
+        if (ViewUtils.areFieldsValid(txtTitleEdit, txtTimeEdit, txtDescriptionEdit, resources)) {
             val cursor = database.getNotification(notification?.id.toString())
             if (isNotificationInDatabase(cursor)) {
                 updateNotificationOnTheManager()
@@ -58,36 +58,6 @@ class EditNotificationActivity : AppCompatActivity() {
             }
             else Toast.makeText(this, R.string.notification_expired, Toast.LENGTH_SHORT).show()
         }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.N)
-    private fun areFieldsValid(): Boolean {
-        var result = true
-        if (txtTitleEdit.text.trim().isEmpty()) {
-            txtTitleEdit.error = resources.getString(R.string.title_validation_error)
-            result = false
-        }
-        if (txtTimeEdit.text.isEmpty()) {
-            txtTimeEdit.error = resources.getString(R.string.time_validation_error)
-            result = false
-        }
-        else if (isChosenTimeInThePast()) {
-            txtTimeEdit.error = resources.getString(R.string.time_in_past_validation_error)
-            result = false
-        }
-        if (txtDescriptionEdit.text.trim().isEmpty()) {
-            txtDescriptionEdit.error = resources.getString(R.string.description_validation_error)
-            result = false
-        }
-        return result
-    }
-
-    @RequiresApi(Build.VERSION_CODES.N)
-    private fun isChosenTimeInThePast(): Boolean {
-        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
-        val parsedDateTime = formatter.parse(txtTimeEdit.text.toString())
-        val currentTime = System.currentTimeMillis()
-        return parsedDateTime?.time!! < currentTime
     }
 
     private fun clearErrors() {
@@ -103,7 +73,7 @@ class EditNotificationActivity : AppCompatActivity() {
 
     private fun setNewNotification() {
         val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
-        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+        val formatter = SimpleDateFormat(DateTime.DATE_TIME_FORMAT, Locale.US)
         val parsedDateTime = formatter.parse(txtTimeEdit.text.toString())
         val intent = Intent(this, NotificationBroadcaster::class.java)
         intent.putExtra("title", notification?.title)
@@ -172,23 +142,26 @@ class EditNotificationActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.N)
     fun pickDateTime(view: View) {
-        val currentDateTime = CurrentDateTime(Calendar.getInstance())
+        val formatter = SimpleDateFormat(DateTime.DATE_TIME_FORMAT, Locale.US)
+        val calendar = Calendar.getInstance()
+        calendar.time = notification?.scheduledTime?.let { formatter.parse(it) }
+        val currentDateTime = DateTime(calendar)
         DatePickerDialog(this, { _, year, month, day ->
             showTimePickerDialog(currentDateTime, year, month, day)
         }, currentDateTime.startYear, currentDateTime.startMonth, currentDateTime.startDay).show()
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
-    private fun showTimePickerDialog(currentDateTime: CurrentDateTime, year: Int, month: Int, day: Int) {
+    private fun showTimePickerDialog(dateTime: DateTime, year: Int, month: Int, day: Int) {
         TimePickerDialog(this, { _, hour, minute -> setTimeEditText(year, month, day, hour, minute) },
-            currentDateTime.startHour, currentDateTime.startMinute, true).show()
+            dateTime.startHour, dateTime.startMinute, true).show()
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
     private fun setTimeEditText(year: Int, month: Int, day: Int, hour: Int, minute: Int) {
         val pickedDateTime = Calendar.getInstance()
         pickedDateTime.set(year, month, day, hour, minute)
-        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+        val formatter = SimpleDateFormat(DateTime.DATE_TIME_FORMAT, Locale.US)
         txtTimeEdit.setText(formatter.format(pickedDateTime.time))
     }
 }

@@ -58,7 +58,7 @@ class NotificationAdapter(
             notifications[position].description,
             notifications[position].scheduledTime
         )
-        intent.putExtra("notification", notification)
+        intent.putExtra(NotificationDTO.ACTIVITY_EXTRA_NAME, notification)
         context.startActivity(intent)
     }
 }
