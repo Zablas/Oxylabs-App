@@ -172,7 +172,10 @@ class EditNotificationActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.N)
     fun pickDateTime(view: View) {
-        val currentDateTime = DateTime(Calendar.getInstance())
+        val formatter = SimpleDateFormat(DateTime.DATE_TIME_FORMAT, Locale.US)
+        val calendar = Calendar.getInstance()
+        calendar.time = notification?.scheduledTime?.let { formatter.parse(it) }
+        val currentDateTime = DateTime(calendar)
         DatePickerDialog(this, { _, year, month, day ->
             showTimePickerDialog(currentDateTime, year, month, day)
         }, currentDateTime.startYear, currentDateTime.startMonth, currentDateTime.startDay).show()
