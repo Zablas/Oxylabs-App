@@ -76,7 +76,7 @@ class NewNotificationFormActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.N)
     private fun isChosenTimeInThePast(): Boolean {
-        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+        val formatter = SimpleDateFormat(DateTime.DATE_TIME_FORMAT, Locale.US)
         val parsedDateTime = formatter.parse(txtTime.text.toString())
         val currentTime = System.currentTimeMillis()
         return parsedDateTime?.time!! < currentTime
@@ -100,7 +100,7 @@ class NewNotificationFormActivity : AppCompatActivity() {
 
     private fun setAlarmManager(pendingIntent: PendingIntent) {
         val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
-        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+        val formatter = SimpleDateFormat(DateTime.DATE_TIME_FORMAT, Locale.US)
         val parsedDateTime = formatter.parse(txtTime.text.toString())
         parsedDateTime?.time?.let { alarmManager.set(AlarmManager.RTC_WAKEUP, it, pendingIntent) }
     }
@@ -109,23 +109,23 @@ class NewNotificationFormActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.N)
     fun pickDateTime(view: View) {
-        val currentDateTime = CurrentDateTime(Calendar.getInstance())
+        val currentDateTime = DateTime(Calendar.getInstance())
         DatePickerDialog(this, { _, year, month, day ->
             showTimePickerDialog(currentDateTime, year, month, day)
         }, currentDateTime.startYear, currentDateTime.startMonth, currentDateTime.startDay).show()
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
-    private fun showTimePickerDialog(currentDateTime: CurrentDateTime, year: Int, month: Int, day: Int) {
+    private fun showTimePickerDialog(dateTime: DateTime, year: Int, month: Int, day: Int) {
         TimePickerDialog(this, { _, hour, minute -> setTimeEditText(year, month, day, hour, minute) },
-            currentDateTime.startHour, currentDateTime.startMinute, true).show()
+            dateTime.startHour, dateTime.startMinute, true).show()
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
     private fun setTimeEditText(year: Int, month: Int, day: Int, hour: Int, minute: Int) {
         val pickedDateTime = Calendar.getInstance()
         pickedDateTime.set(year, month, day, hour, minute)
-        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+        val formatter = SimpleDateFormat(DateTime.DATE_TIME_FORMAT, Locale.US)
         txtTime.setText(formatter.format(pickedDateTime.time))
     }
 }
